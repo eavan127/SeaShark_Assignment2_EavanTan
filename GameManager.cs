@@ -2,43 +2,58 @@
 
 namespace SeaShark
 {
+    // Manages the overall game flow, state, and interaction between objects
     public class GameManager
     {
-        private Player player;
-        private Level currentLevel;
-        private Timer timer;
+        // Private fields to maintain game state (Encapsulation)
+        private Player player; // Reference to the current player
+        private Level currentLevel; // The level currently being played
+        private Timer timer; // Timer to track gameplay time
 
+        // Constructor to initialize GameManager with a player
         public GameManager(Player p)
         {
-            player = p;
+            player = p; // Assign the provided player to the private field
         }
 
+        // Method to start the game sequence
         public void StartGame()
         {
+            // Display game title and player name
             Console.WriteLine("===== SEA SHARK GAME =====");
             Console.WriteLine($"Player: {player.PlayerName}");
 
+            // Initialize the first level as BeginnerLevel
             currentLevel = new BeginnerLevel();
+            // Set the timer for 60 seconds
             timer = new Timer(60);
 
+            // Start the timer and the current level
             timer.StartTimer();
             currentLevel.StartLevel();
+            // Load and display the quiz for the beginner level
             currentLevel.LoadQuiz();
 
+            // Check if the current level was successfully completed
             if (currentLevel.Completed)
             {
+                // Transition to the advanced level
                 Console.WriteLine("Unlocking Advanced Level...");
+                // Reassign currentLevel to AdvancedLevel (Polymorphism)
                 currentLevel = new AdvancedLevel();
                 currentLevel.StartLevel();
+                // Load and display the quiz for the advanced level
                 currentLevel.LoadQuiz();
             }
 
+            // Finish the game
             EndGame();
         }
 
+        // Method to handle end-of-game logic
         public void EndGame()
         {
-            Console.WriteLine("\nGame Over.");
+            Console.WriteLine("\nGame Over."); // Display game over message
         }
     }
 }
