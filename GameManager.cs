@@ -1,58 +1,44 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SeaShark_Assignment2
+namespace SeaShark
 {
-    // The Quiz class handles quiz logic including question display
-    // and answer validation.
-    public class Quiz
+    public class GameManager
     {
-        // Private fields
-        private string question;
-        private int correctAnswerIndex;
-        private int score;
+        private Player player;
+        private Level currentLevel;
+        private Timer timer;
 
-        // Public property to access score safely
-        public int Score
+        public GameManager(Player p)
         {
-            get { return score; }
+            player = p;
         }
 
-        // Constructor
-        public Quiz(string questionText, int correctIndex)
+        public void StartGame()
         {
-            question = questionText;
-            correctAnswerIndex = correctIndex;
-            score = 0;
-        }
+            Console.WriteLine("===== SEA SHARK GAME =====");
+            Console.WriteLine($"Player: {player.PlayerName}");
 
-        // Display the quiz question
-        public void ShowQuiz()
-        {
-            Console.WriteLine("\nQuiz Question:");
-            Console.WriteLine(question);
-            Console.WriteLine("1. Class");
-            Console.WriteLine("2. Variable");
-            Console.WriteLine("3. Loop");
-        }
+            currentLevel = new BeginnerLevel();
+            timer = new Timer(60);
 
-        // Check the user's answer
-        public bool CheckAnswer(int userAnswer)
-        {
-            if (userAnswer == correctAnswerIndex)
+            timer.StartTimer();
+            currentLevel.StartLevel();
+            currentLevel.LoadQuiz();
+
+            if (currentLevel.Completed)
             {
-                score++;
-                Console.WriteLine("Correct answer!");
-                return true;
+                Console.WriteLine("Unlocking Advanced Level...");
+                currentLevel = new AdvancedLevel();
+                currentLevel.StartLevel();
+                currentLevel.LoadQuiz();
             }
-            else
-            {
-                Console.WriteLine("Wrong answer!");
-                return false;
-            }
+
+            EndGame();
+        }
+
+        public void EndGame()
+        {
+            Console.WriteLine("\nGame Over.");
         }
     }
 }
