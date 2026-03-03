@@ -7,8 +7,6 @@ namespace SeaShark
     {
         // Private fields to maintain game state (Encapsulation)
         private Player player; // Reference to the current player
-        private Level currentLevel; // The level currently being played
-        private Timer timer; // Timer to track gameplay time
 
         // Constructor to initialize GameManager with a player
         public GameManager(Player p)
@@ -20,32 +18,30 @@ namespace SeaShark
         public void StartGame()
         {
             // Display game title and player name
-            Console.WriteLine("===== SEA SHARK GAME =====");
+            Console.WriteLine("\n===== SEA SHARK GAME =====");
             Console.WriteLine($"Player: {player.PlayerName}");
 
             // Initialize the first level as BeginnerLevel
-            currentLevel = new BeginnerLevel();
-            // Set the timer for 300 seconds (5 minutes) for the Beginner level
-            timer = new Timer(300);
+            // The timer is now managed inside the Level class
+            Level currentLevel = new BeginnerLevel();
 
-            // Start the timer and the current level
-            timer.StartTimer();
+            // Start the level, this also starts the timer
             currentLevel.StartLevel();
-            // Load and display the quiz for the beginner level
+            // Load and run the quiz for the beginner level, retry until all correct
             currentLevel.LoadQuiz();
 
-            // Check if the current level was successfully completed
+            // Check if the beginner level was successfully completed
             if (currentLevel.Completed)
             {
                 // Transition to the advanced level
                 Console.WriteLine("Unlocking Advanced Level...");
-                // Reassign currentLevel to AdvancedLevel (Polymorphism)
+                Console.WriteLine();
+
+                // Create a new AdvancedLevel (Polymorphism)
                 currentLevel = new AdvancedLevel();
-                // Reset timer to 420 seconds (7 minutes) for the Advanced level
-                timer = new Timer(420);
-                timer.StartTimer(); // Start the new timer for advanced level
+                // Start the advanced level, this also starts its own timer
                 currentLevel.StartLevel();
-                // Load and display the quiz for the advanced level
+                // Load and run the quiz for the advanced level, retry until all correct
                 currentLevel.LoadQuiz();
             }
 
@@ -53,10 +49,11 @@ namespace SeaShark
             EndGame();
         }
 
-        // Method to handle end-of-game logic
+        // Method to handle end of the game's logic
         public void EndGame()
         {
-            Console.WriteLine("\nGame Over."); // Display game over message
+            Console.WriteLine("\n===== GAME OVER ====="); // Display game over message
+            Console.WriteLine("Thank you for playing SeaShark!");
         }
     }
 }

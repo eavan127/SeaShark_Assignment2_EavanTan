@@ -1,6 +1,5 @@
 ﻿using System;
 
-// Fixing namespace to match the rest of the project
 namespace SeaShark
 {
     // The Quiz class handles quiz logic including question display
@@ -10,7 +9,7 @@ namespace SeaShark
         // Private fields (Encapsulation)
         private string question;            // The question text
         private string[] options;           // The choices available to the user
-        private int correctAnswerIndex;     // The index of the correct answer
+        private int correctAnswerIndex;     // The zero-based index of the correct answer
         private int score;                  // Tracks the user's score for this quiz
 
         // Public property to securely access the score externally
@@ -23,17 +22,18 @@ namespace SeaShark
         // Used to create a new quiz question
         public Quiz(string questionText, string[] optionsArray, int correctIndex)
         {
-            question = questionText;          // Initialize question text
-            options = optionsArray;           // Initialize the choices
-            correctAnswerIndex = correctIndex; // Set which choice is correct 
-            score = 0;                        // Initial score is 0
+            question = questionText;           // Initialize question text
+            options = optionsArray;            // Initialize the choices
+            correctAnswerIndex = correctIndex; // Set which choice is correct (0-based)
+            score = 0;                         // Initial score is 0
         }
 
-        // Display the quiz question and its options
-        public void ShowQuiz()
+        // Display the quiz with their specific question numbers and total count
+        public void ShowQuiz(int questionNumber, int totalQuestions)
         {
-            Console.WriteLine("\nQuiz Question:");
-            Console.WriteLine(question); // Print the question
+            // Display the question number of total questions
+            Console.WriteLine($"\n--- Question {questionNumber} of {totalQuestions} ---");
+            Console.WriteLine(question); // Print the question text
 
             // Loop through all options and label them A, B, C, D
             for (int i = 0; i < options.Length; i++)
@@ -48,7 +48,6 @@ namespace SeaShark
         public bool CheckAnswer(string userAnswer)
         {
             // Convert the letter (A, B, C, D) to a 0-based index
-            // e.g. 'A' - 'A' = 0, 'B' - 'A' = 1, 'C' - 'A' = 2, 'D' - 'A' = 3
             int userIndex = userAnswer[0] - 'A';
 
             if (userIndex == correctAnswerIndex) // Compare with the correct index
