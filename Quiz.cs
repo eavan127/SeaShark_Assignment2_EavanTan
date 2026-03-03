@@ -11,7 +11,7 @@ namespace SeaShark
         private string question;            // The question text
         private string[] options;           // The choices available to the user
         private int correctAnswerIndex;     // The index of the correct answer
-        private int score;                  // Tracks the user's score for the quiz
+        private int score;                  // Tracks the user's score for this quiz
 
         // Public property to securely access the score externally
         public int Score
@@ -34,23 +34,26 @@ namespace SeaShark
         {
             Console.WriteLine("\nQuiz Question:");
             Console.WriteLine(question); // Print the question
-            
-            // Loop through all options to display them as a numbered list
+
+            // Loop through all options and label them A, B, C, D
             for (int i = 0; i < options.Length; i++)
             {
-                // Display options starting with 1 (e.g., 1. OptionA)
-                Console.WriteLine($"{i + 1}. {options[i]}");
+                // Convert index to letter: 0 = A, 1 = B, 2 = C, 3 = D
+                char letter = (char)('A' + i);
+                Console.WriteLine($"{letter}. {options[i]}"); // Display as "A. Option"
             }
         }
 
-        // Check the user's answer
-        public bool CheckAnswer(int userAnswer)
+        // Check the user's answer using a letter (A, B, C, D)
+        public bool CheckAnswer(string userAnswer)
         {
-            // userrAnswer is using 1, 2, 3...
-            // so subtract 1 to compare it with the 0-based correctAnswerIndex
-            if ((userAnswer - 1) == correctAnswerIndex)
+            // Convert the letter (A, B, C, D) to a 0-based index
+            // e.g. 'A' - 'A' = 0, 'B' - 'A' = 1, 'C' - 'A' = 2, 'D' - 'A' = 3
+            int userIndex = userAnswer[0] - 'A';
+
+            if (userIndex == correctAnswerIndex) // Compare with the correct index
             {
-                score++; // Increment score
+                score++; // Increment score for a correct answer
                 Console.WriteLine("Correct answer!");
                 return true; // Successfully answered
             }

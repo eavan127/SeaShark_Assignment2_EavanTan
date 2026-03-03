@@ -27,12 +27,12 @@ namespace SeaShark
             // Display the quiz question and numbered options
             quiz.ShowQuiz();
 
-            // Prompt the player to input their answer
-            Console.Write("Enter answer: ");
-            // Read user input and convert the string into an integer
-            int answer = Convert.ToInt32(Console.ReadLine());
+            // Prompt the player to input their answer as a letter
+            Console.Write("Enter answer (A/B/C/D): ");
+            // Read user input as a string and convert it to uppercase for consistent matching
+            string answer = Console.ReadLine().Trim().ToUpper();
 
-            // Validate the player's answer
+            // Validate the player's answer using the letter input
             if (quiz.CheckAnswer(answer))
             {
                 // If correct, mark the level as completed
