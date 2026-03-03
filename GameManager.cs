@@ -25,8 +25,8 @@ namespace SeaShark
 
             // Initialize the first level as BeginnerLevel
             currentLevel = new BeginnerLevel();
-            // Set the timer for 60 seconds
-            timer = new Timer(60);
+            // Set the timer for 300 seconds (5 minutes) for the Beginner level
+            timer = new Timer(300);
 
             // Start the timer and the current level
             timer.StartTimer();
@@ -41,6 +41,9 @@ namespace SeaShark
                 Console.WriteLine("Unlocking Advanced Level...");
                 // Reassign currentLevel to AdvancedLevel (Polymorphism)
                 currentLevel = new AdvancedLevel();
+                // Reset timer to 420 seconds (7 minutes) for the Advanced level
+                timer = new Timer(420);
+                timer.StartTimer(); // Start the new timer for advanced level
                 currentLevel.StartLevel();
                 // Load and display the quiz for the advanced level
                 currentLevel.LoadQuiz();
