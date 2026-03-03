@@ -6,25 +6,26 @@ namespace SeaShark
     // Controls countdown timer for levels or gameplay segments
     public class Timer
     {
-        // Private field tracking the total time limit in seconds
-        private int timeLimit;
+        // Private field tracking the remaining time in seconds
+        private int timeLeft;
 
         // Stopwatch object to track elapsed time during gameplay
         private Stopwatch stopwatch;
 
-        // Public property to read the time limit
-        public int TimeLimit => timeLimit;
+        // Private field for the total time limit
+        private int timeLimit;
+
+        // Public property to read the remaining time
+        public int TimeLeft => Math.Max(0, timeLimit - ElapsedSeconds);
 
         // Public property to get the number of seconds that have elapsed
         public int ElapsedSeconds => (int)stopwatch.Elapsed.TotalSeconds;
-
-        // Public property to get the remaining seconds
-        public int TimeLeft => Math.Max(0, timeLimit - ElapsedSeconds);
 
         // Constructor to initialize the timer with a specific duration
         public Timer(int seconds)
         {
             timeLimit = seconds;          // Assign the time limit in seconds
+            timeLeft = seconds;           // Set the initial remaining time
             stopwatch = new Stopwatch();  // Create a new Stopwatch instance
         }
 
@@ -41,8 +42,14 @@ namespace SeaShark
             stopwatch.Stop(); // Stop counting elapsed time
         }
 
+        // Method to update the timer, recalculating the remaining time
+        public void UpdateTimer()
+        {
+            timeLeft = Math.Max(0, timeLimit - ElapsedSeconds); // Recalculate remaining time
+        }
+
         // Method to check if the time has run out
-        public bool IsTimeUp()
+        public bool TimeUp()
         {
             return ElapsedSeconds >= timeLimit; // Returns true if elapsed time exceeds the limit
         }

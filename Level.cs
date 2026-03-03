@@ -1,27 +1,29 @@
 ﻿using System;
+using System.Collections.Generic; // Required for List<Quiz>
 
 namespace SeaShark
 {
-    // Abstract base class representing a generic game level (Abstraction + Encapsulation)
+    // Abstract base class representing a generic game level 
     public abstract class Level
     {
-        // Protected fields accessible by derived classes (e.g., BeginnerLevel, AdvancedLevel)
-        protected int difficultyIndex; // The difficulty rating of the level
-        protected int timeLimit;       // Allowed time to complete the level
-        protected bool completed;      // Tracks if the level has been successfully finished
-        protected Quiz quiz;           // The quiz associated with this level
-        protected Timer timer;         // Timer to track time during this level
+        // Protected fields accessible by derived classes 
+        protected int difficultyIndex;    // The difficulty rating of the level
+        protected double timeLimit;       // Allowed time to complete the level 
+        protected bool completed;         // Tracks if the level has been successfully finished 
+        protected List<Quiz> quiz;        // List of quizzes for this level 
+        protected Timer timer;            // Timer to track time during this level
 
         // Public property to check if the level is completed
         public bool Completed => completed;
 
         // Constructor to initialize the level's basic properties
-        public Level(int difficulty, int time)
+        public Level(int difficulty, double time)
         {
-            difficultyIndex = difficulty; // Set the level difficulty
-            timeLimit = time;             // Set the time limit
-            completed = false;            // Level is initially not completed
-            timer = new Timer(time);      // Create a timer with the level's time limit
+            difficultyIndex = difficulty;     // Set the level difficulty
+            timeLimit = time;                 // Set the time limit
+            completed = false;                // Level is initially not completed
+            quiz = new List<Quiz>();          // Initialize empty quiz list
+            timer = new Timer((int)time);     // Create a timer with the level's time limit
         }
 
         // Method to visually indicate the start of the level and begin the timer
@@ -49,7 +51,6 @@ namespace SeaShark
         }
 
         // Abstract method meant to be overridden by derived classes (Polymorphism)
-        // This forces each specific level to define its own quiz-loading logic
         public abstract void LoadQuiz();
     }
 }

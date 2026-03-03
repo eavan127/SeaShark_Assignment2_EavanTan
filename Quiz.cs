@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic; // Required for List<Quiz>
 
 namespace SeaShark
 {
@@ -7,25 +8,20 @@ namespace SeaShark
     public class Quiz
     {
         // Private fields (Encapsulation)
-        private string question;            // The question text
+        private string[] questions;         // Array of question text (matches UML: questions: string[])
         private string[] options;           // The choices available to the user
         private int correctAnswerIndex;     // The zero-based index of the correct answer
+        private int currentQuestionIndex;   // Tracks which question is currently active (UML field)
         private int score;                  // Tracks the user's score for this quiz
 
-        // Public property to securely access the score externally
-        public int Score
-        {
-            get { return score; }
-        }
-
         // Constructor
-        // Used to create a new quiz question
         public Quiz(string questionText, string[] optionsArray, int correctIndex)
         {
-            question = questionText;           // Initialize question text
-            options = optionsArray;            // Initialize the choices
-            correctAnswerIndex = correctIndex; // Set which choice is correct (0-based)
-            score = 0;                         // Initial score is 0
+            questions = new string[] { questionText }; // Store the question in an array
+            options = optionsArray;                     // Initialize the choices
+            correctAnswerIndex = correctIndex;          // Set which choice is correct (0-based)
+            currentQuestionIndex = 0;                   // Start at the first question
+            score = 0;                                  // Initial score is 0
         }
 
         // Display the quiz with their specific question numbers and total count
@@ -33,7 +29,7 @@ namespace SeaShark
         {
             // Display the question number of total questions
             Console.WriteLine($"\n--- Question {questionNumber} of {totalQuestions} ---");
-            Console.WriteLine(question); // Print the question text
+            Console.WriteLine(questions[currentQuestionIndex]); // Print the current question text
 
             // Loop through all options and label them A, B, C, D
             for (int i = 0; i < options.Length; i++)
@@ -44,15 +40,23 @@ namespace SeaShark
             }
         }
 
+        // Display a hint for the current question
+        public void ShowHint()
+        {
+            // Provide a hint by revealing the first letter of the correct answer option
+            string correctOption = options[correctAnswerIndex]; // Get the correct option text
+            Console.WriteLine($"Hint: The correct answer starts with '{correctOption[0]}'...");
+        }
+
         // Check the user's answer using a letter (A, B, C, D)
-        public bool CheckAnswer(string userAnswer)
+        public bool CheckAns(string userAnswer)
         {
             // Convert the letter (A, B, C, D) to a 0-based index
             int userIndex = userAnswer[0] - 'A';
 
             if (userIndex == correctAnswerIndex) // Compare with the correct index
             {
-                score++; // Increment score for a correct answer
+                UpdateScore(); // Use the separate method to update score 
                 Console.WriteLine("Correct answer!");
                 return true; // Successfully answered
             }
@@ -61,6 +65,18 @@ namespace SeaShark
                 Console.WriteLine("Wrong answer!");
                 return false; // Failed to answer correctly
             }
+        }
+
+        // Method to update the score 
+        public void UpdateScore()
+        {
+            score++; // Increment score by 1 for each correct answer
+        }
+
+        // Method to get the current score 
+        public int GetScore()
+        {
+            return score; // Return the current score value
         }
     }
 }
