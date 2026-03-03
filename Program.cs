@@ -1,22 +1,23 @@
 ﻿using System;
 
-namespace SeaShark_Assignment2
+namespace SeaShark
 {
+    // The main program class that acts as the entry point
     class Program
     {
+        // Main method where the execution begins
         static void Main(string[] args)
         {
-            // Create objects
-            Player player = new Player("Eavan");
-            Quiz quiz = new Quiz("Which keyword is used to define a class in C#?", 1);
+            // Initialize a new player named "SeaShark"
+            Player player = new Player("SeaShark");
+            
+            // Create a GameManager instance and pass the player into it
+            GameManager game = new GameManager(player);
 
-            // GameManager handles interaction
-            GameManager game = new GameManager(player, quiz);
-
-            // Start game
+            // Start the main game logic
             game.StartGame();
 
-            Console.WriteLine("\nPress any key to exit...");
+            // Wait for user to press a key before closing the console window
             Console.ReadKey();
         }
     }

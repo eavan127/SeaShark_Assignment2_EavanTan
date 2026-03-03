@@ -1,57 +1,63 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SeaShark_Assignment2
+// Fixing namespace to match the rest of the project
+namespace SeaShark
 {
     // The Quiz class handles quiz logic including question display
     // and answer validation.
     public class Quiz
     {
-        // Private fields
-        private string question;
-        private int correctAnswerIndex;
-        private int score;
+        // Private fields (Encapsulation)
+        private string question;            // The question text
+        private string[] options;           // The choices available to the user
+        private int correctAnswerIndex;     // The index of the correct answer
+        private int score;                  // Tracks the user's score for the quiz
 
-        // Public property to access score safely
+        // Public property to securely access the score externally
         public int Score
         {
             get { return score; }
         }
 
         // Constructor
-        public Quiz(string questionText, int correctIndex)
+        // Used to create a new quiz question
+        public Quiz(string questionText, string[] optionsArray, int correctIndex)
         {
-            question = questionText;
-            correctAnswerIndex = correctIndex;
-            score = 0;
+            question = questionText;          // Initialize question text
+            options = optionsArray;           // Initialize the choices
+            correctAnswerIndex = correctIndex; // Set which choice is correct 
+            score = 0;                        // Initial score is 0
         }
 
-        // Display the quiz question
+        // Display the quiz question and its options
         public void ShowQuiz()
         {
             Console.WriteLine("\nQuiz Question:");
-            Console.WriteLine(question);
-            Console.WriteLine("1. Class");
-            Console.WriteLine("2. Variable");
-            Console.WriteLine("3. Loop");
+            Console.WriteLine(question); // Print the question
+            
+            // Loop through all options to display them as a numbered list
+            for (int i = 0; i < options.Length; i++)
+            {
+                // Display options starting with 1 (e.g., 1. OptionA)
+                Console.WriteLine($"{i + 1}. {options[i]}");
+            }
         }
 
         // Check the user's answer
         public bool CheckAnswer(int userAnswer)
         {
-            if (userAnswer == correctAnswerIndex)
+            // userrAnswer is using 1, 2, 3...
+            // so subtract 1 to compare it with the 0-based correctAnswerIndex
+            if ((userAnswer - 1) == correctAnswerIndex)
             {
-                score++;
+                score++; // Increment score
                 Console.WriteLine("Correct answer!");
-                return true;
+                return true; // Successfully answered
             }
             else
             {
                 Console.WriteLine("Wrong answer!");
-                return false;
+                return false; // Failed to answer correctly
             }
         }
     }

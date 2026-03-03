@@ -1,58 +1,59 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SeaShark_Assignment2
+namespace SeaShark
 {
-    // The Quiz class handles quiz logic including question display
-    // and answer validation.
-    public class Quiz
+    // Manages the overall game flow, state, and interaction between objects
+    public class GameManager
     {
-        // Private fields
-        private string question;
-        private int correctAnswerIndex;
-        private int score;
+        // Private fields to maintain game state (Encapsulation)
+        private Player player; // Reference to the current player
+        private Level currentLevel; // The level currently being played
+        private Timer timer; // Timer to track gameplay time
 
-        // Public property to access score safely
-        public int Score
+        // Constructor to initialize GameManager with a player
+        public GameManager(Player p)
         {
-            get { return score; }
+            player = p; // Assign the provided player to the private field
         }
 
-        // Constructor
-        public Quiz(string questionText, int correctIndex)
+        // Method to start the game sequence
+        public void StartGame()
         {
-            question = questionText;
-            correctAnswerIndex = correctIndex;
-            score = 0;
-        }
+            // Display game title and player name
+            Console.WriteLine("===== SEA SHARK GAME =====");
+            Console.WriteLine($"Player: {player.PlayerName}");
 
-        // Display the quiz question
-        public void ShowQuiz()
-        {
-            Console.WriteLine("\nQuiz Question:");
-            Console.WriteLine(question);
-            Console.WriteLine("1. Class");
-            Console.WriteLine("2. Variable");
-            Console.WriteLine("3. Loop");
-        }
+            // Initialize the first level as BeginnerLevel
+            currentLevel = new BeginnerLevel();
+            // Set the timer for 60 seconds
+            timer = new Timer(60);
 
-        // Check the user's answer
-        public bool CheckAnswer(int userAnswer)
-        {
-            if (userAnswer == correctAnswerIndex)
+            // Start the timer and the current level
+            timer.StartTimer();
+            currentLevel.StartLevel();
+            // Load and display the quiz for the beginner level
+            currentLevel.LoadQuiz();
+
+            // Check if the current level was successfully completed
+            if (currentLevel.Completed)
             {
-                score++;
-                Console.WriteLine("Correct answer!");
-                return true;
+                // Transition to the advanced level
+                Console.WriteLine("Unlocking Advanced Level...");
+                // Reassign currentLevel to AdvancedLevel (Polymorphism)
+                currentLevel = new AdvancedLevel();
+                currentLevel.StartLevel();
+                // Load and display the quiz for the advanced level
+                currentLevel.LoadQuiz();
             }
-            else
-            {
-                Console.WriteLine("Wrong answer!");
-                return false;
-            }
+
+            // Finish the game
+            EndGame();
+        }
+
+        // Method to handle end-of-game logic
+        public void EndGame()
+        {
+            Console.WriteLine("\nGame Over."); // Display game over message
         }
     }
 }
